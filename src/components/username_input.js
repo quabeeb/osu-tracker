@@ -12,5 +12,3 @@ class UsernameInput extends Component{
 }
 
 export default UsernameInput;
-
-

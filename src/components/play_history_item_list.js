@@ -7,12 +7,46 @@ class PlayHistoryItemList extends Component{
 
 		this.state = {
 			itemCount: 0,
+			lastRefresh: new Date(),
 			playHistoryItems : []
 		}
 
 		this.state.playHistoryItems.push(<PlayHistoryItem />);
 		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
+		this.state.playHistoryItems.push(<PlayHistoryItem />);
 	}
+	
+	componentDidMount() {
+		this.timerID = setInterval(
+			() => this.updateRefreshTime(),
+			30000
+		);
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.timerID);
+	}
+
+	updateRefreshTime() {
+		this.setState({
+			itemCount: 0,
+			lastRefresh: new Date(),
+			playHistoryItems: this.state.playHistoryItems
+		});
+	}
+	
 
 	render() {
 		const playHistoryItems = this.state.playHistoryItems.map((item, idx) => 
@@ -24,7 +58,12 @@ class PlayHistoryItemList extends Component{
 		return (
 			<div>
 				<h1>Play History</h1>
-				<ul className="list-group list-group-flush">{playHistoryItems}</ul>
+				<div> 
+					Last refreshed: {this.state.lastRefresh.toString()}
+				</div>
+				<ul className="list-group list-group-flush andy-scrollable">
+					{playHistoryItems}
+				</ul>
 			</div>
 		);
 	}
