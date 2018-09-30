@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-class ConfigurationInput extends Component{
+class ConfigurationInput extends Component {
 	constructor(props) {
 		super(props);
 
@@ -38,13 +38,17 @@ class ConfigurationInput extends Component{
 	}
 
 	onUserNameInputChange(username) {
-		this.setState({username: username, apikey: this.state.apikey});
-		this.props.onUserInputChange(this.state.username, this.state.apikey);
+		this.setState({
+			username: username, apikey: this.state.apikey}, 
+			() => {this.props.onUserInputChange(this.state.username, this.state.apikey)
+		});		
 	}
 
 	onAPIKeyInputChange(apikey) {
-		this.setState({username: this.state.username, apikey: apikey});
-		this.props.onUserInputChange(this.state.username, this.state.apikey);
+		this.setState({
+			username: this.state.username, apikey: apikey}, 
+			() => {this.props.onUserInputChange(this.state.username, this.state.apikey)
+		});		
 	}
 }
 

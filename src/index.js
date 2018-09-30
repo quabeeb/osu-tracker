@@ -10,42 +10,21 @@ class App extends Component {
 
 		this.state = {
 			playHistoryItems: [],
-			currentSelection: null,
-			username: '',
-			apikey: ''
+			currentSelection: null
 		};
 	}
 
 	retrieveRecentPlays(username, apikey) {
-		fetch(`https://osu.ppy.sh/api/get_user_recent?k=${apikey}&u=${username}`, {'mode': 'no-cors'})
-		.then(results => {
-			console.log(results.json());
-		})
-		/*
-		var xhr = new XMLHttpRequest()
-		xhr.open("GET", `https://osu.ppy.sh/api/get_user_recent?k=${apikey}&u=${username}`, true)
-		
-		xhr.onload = function(e){
-			if (xhr.readyState === 4) {
-				if (xhr.status === 200) {
-					var recentPlays = JSON.parse(xhr.response);
-					console.log(recentPlays)
-				} else {
-					console.error(xhr.statusText)
-				}
-			}
-		}.bind(this)
+		const proxyURL="http://localhost:8888";
+		var playHistoryItems = [];
 
-		xhr.onerror = function(e){
-			console.error(xhr.statusText)
-		}
-		xhr.send(null)
-		*/
-		
+		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_user_recent?k=${apikey}&u=${username}`)
+		.then(results => results.json())
+		.then(data => console.log(data));
 	}
 
 	render() {
-		const retrieveRecentPlays = _.debounce((username, apikey) => { this.retrieveRecentPlays(this.state.username, this.state.apikey) }, 500);
+		const retrieveRecentPlays = _.debounce((username, apikey) => { this.retrieveRecentPlays(username, apikey) }, 500);
 
 		return (
 			<div>
