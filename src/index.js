@@ -11,11 +11,15 @@ class App extends Component {
 		this.state = {
 			playHistoryItems: [],
 			currentSelection: null,
-			mostRecentDate: new Date(0)
+			mostRecentDate: new Date()
 		};
 	}
 
 	retrieveRecentPlays(username, apikey) {
+		if (_.isEmpty(username) || _.isEmpty(apikey)) {
+			return;
+		}
+
 		const proxyURL="http://localhost:8888";
 		var playHistoryItems = [];
 
@@ -33,7 +37,11 @@ class App extends Component {
 	}
 
 	addPlayToHistory(playHistoryItem) {
-		const checkDate = new Date(playHistoryItem.date);
+		const offset = new Date().getTimezoneOffset();
+
+		const checkDate = new Date(new Date(new Date(playHistoryItem.date).getTime() - offset*60000).toLocaleString()); //parse as GMT, output as local
+		console.log(checkDate)
+		console.log(this.state.mostRecentDate)
 
 		if (this.state.mostRecentDate < checkDate) {
 			const playHistoryItems = this.state.playHistoryItems.slice();
