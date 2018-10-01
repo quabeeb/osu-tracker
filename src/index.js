@@ -38,10 +38,7 @@ class App extends Component {
 
 	addPlayToHistory(playHistoryItem) {
 		const offset = new Date().getTimezoneOffset();
-
-		const checkDate = new Date(new Date(new Date(playHistoryItem.date).getTime() - offset*60000).toLocaleString()); //parse as GMT, output as local
-		console.log(checkDate)
-		console.log(this.state.mostRecentDate)
+		const checkDate = new Date(new Date(new Date(playHistoryItem.date).getTime() - offset*60000).toLocaleString());
 
 		if (this.state.mostRecentDate < checkDate) {
 			const playHistoryItems = this.state.playHistoryItems.slice();
