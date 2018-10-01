@@ -10,7 +10,8 @@ class App extends Component {
 
 		this.state = {
 			playHistoryItems: [],
-			currentSelection: null
+			currentSelection: null,
+			mostRecentDate: new Date()
 		};
 	}
 
@@ -20,7 +21,39 @@ class App extends Component {
 
 		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_user_recent?k=${apikey}&u=${username}`)
 		.then(results => results.json())
-		.then(data => console.log(data));
+		.then(data => this.addRecentPlays(data));
+	}
+
+	addRecentPlays(tempHistoryItems) {
+		const ascDateItems = tempHistoryItems.reverse();
+
+		_.each(ascDateItems, (tempHistoryItem) => {
+			this.addPlayToHistory(tempHistoryItem);
+		});
+	}
+
+	addPlayToHistory(playHistoryItem) {
+		const checkDate = new Date(playHistoryItem.date);
+
+		if (this.state.mostRecentDate < checkDate) {
+			const playHistoryItems = this.state.playHistoryItems.slice();
+
+			playHistoryItems.unshift(playHistoryItem);
+
+			this.setState({
+				playHistoryItems: playHistoryItems, 
+				currentSelection: this.state.currentSelection,
+				mostRecentDate: checkDate
+			});
+		}
+	}
+
+	clearPlayHistory() {
+		this.setState({
+			playHistoryItems: [],
+			currentSelection: null,
+			mostRecentDate: new Date()
+		});
 	}
 
 	render() {
@@ -29,7 +62,7 @@ class App extends Component {
 		return (
 			<div>
 				<ConfigurationInput onUserInputChange={retrieveRecentPlays} />
-				<PlayHistoryItemList />
+				<PlayHistoryItemList playHistoryItems={this.state.playHistoryItems} />
 			</div>
 		);
 	}
