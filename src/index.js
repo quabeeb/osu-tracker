@@ -11,7 +11,7 @@ class App extends Component {
 		this.state = {
 			playHistoryItems: [],
 			currentSelection: null,
-			mostRecentDate: new Date()
+			mostRecentDate: new Date(0)
 		};
 	}
 
@@ -62,7 +62,7 @@ class App extends Component {
 		return (
 			<div>
 				<ConfigurationInput onUserInputChange={retrieveRecentPlays} />
-				<PlayHistoryItemList playHistoryItems={this.state.playHistoryItems} />
+				<PlayHistoryItemList playHistoryItems={this.state.playHistoryItems} mostRecentDate={this.state.mostRecentDate} />
 			</div>
 		);
 	}
