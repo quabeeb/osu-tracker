@@ -6,8 +6,8 @@ const PlayHistoryItemList = (props) => {
 		return <div>Loading...</div>
 	}
 
-	const playHistoryItems = props.playHistoryItems.map((item, idx) => 
-		<PlayHistoryItem key={idx} item={item} />
+	const playHistoryItems = props.playHistoryItems.map(item => 
+		<PlayHistoryItem key={item.date} item={item} />
 	);
 
 	return (

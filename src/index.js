@@ -11,46 +11,64 @@ class App extends Component {
 		this.state = {
 			playHistoryItems: [],
 			currentSelection: null,
-			mostRecentDate: new Date()
+			mostRecentDate: new Date(0)
 		};
 	}
 
-	retrieveRecentPlays(username, apikey) {
-		if (_.isEmpty(username) || _.isEmpty(apikey)) {
-			return;
-		}
-
-		const proxyURL="http://localhost:8888";
-		var playHistoryItems = [];
-
-		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_user_recent?k=${apikey}&u=${username}`)
-		.then(results => results.json())
-		.then(data => this.addRecentPlays(data));
-	}
-
-	addRecentPlays(tempHistoryItems) {
+	addRecentPlays(tempHistoryItems, apiKey) {
 		const ascDateItems = tempHistoryItems.reverse();
 
 		_.each(ascDateItems, (tempHistoryItem) => {
-			this.addPlayToHistory(tempHistoryItem);
+			this.retrieveAndAddBeatmapInfo(apiKey, tempHistoryItem);
 		});
 	}
 
 	addPlayToHistory(playHistoryItem) {
-		const offset = new Date().getTimezoneOffset();
-		const checkDate = new Date(new Date(new Date(playHistoryItem.date).getTime() - offset*60000).toLocaleString());
+		// calculations to compare and display in local time
+		// dates returned from osu! API are in UTC
+		const checkDate = new Date(new Date(new Date(playHistoryItem.date).getTime() - new Date().getTimezoneOffset()*60000).toLocaleString());
 
-		if (this.state.mostRecentDate < checkDate) {
-			const playHistoryItems = this.state.playHistoryItems.slice();
-
-			playHistoryItems.unshift(playHistoryItem);
-
-			this.setState({
-				playHistoryItems: playHistoryItems, 
-				currentSelection: this.state.currentSelection,
-				mostRecentDate: checkDate
-			});
+		if (this.state.mostRecentDate >= checkDate) {
+			return;
 		}
+
+		const playHistoryItems = this.state.playHistoryItems.slice();
+		playHistoryItems.unshift(playHistoryItem);
+
+		this.setState({
+			playHistoryItems: playHistoryItems, 
+			currentSelection: this.state.currentSelection,
+			mostRecentDate: checkDate
+		});
+	}
+
+	retrieveRecentPlays(username, apiKey) {
+		if (_.isEmpty(username) || _.isEmpty(apiKey)) {
+			return;
+		}
+
+		const proxyURL="http://localhost:8888";
+
+		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_user_recent?k=${apiKey}&u=${username}`)
+		.then(results => results.json())
+		.then(data => this.addRecentPlays(data, apiKey));
+	}
+
+	retrieveAndAddBeatmapInfo(apiKey, playHistoryItem) {
+		if (_.isEmpty(apiKey) || _.isEmpty(playHistoryItem)) {
+			return;
+		}
+
+		const proxyURL="http://localhost:8888";
+		const beatmapId = playHistoryItem.beatmap_id;
+
+		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_beatmaps?k=${apiKey}&b=${beatmapId}`)
+		.then(results => results.json())
+		.then(beatmapInfo => {
+			playHistoryItem.beatmapInfo=beatmapInfo[0];
+			return playHistoryItem;
+		})
+		.then(playHistoryItem => this.addPlayToHistory(playHistoryItem));
 	}
 
 	clearPlayHistory() {
@@ -62,12 +80,14 @@ class App extends Component {
 	}
 
 	render() {
-		const retrieveRecentPlays = _.debounce((username, apikey) => { this.retrieveRecentPlays(username, apikey) }, 500);
+		const retrieveRecentPlays = _.debounce((username, apiKey) => { this.retrieveRecentPlays(username, apiKey) }, 500);
 
 		return (
 			<div>
 				<ConfigurationInput onUserInputChange={retrieveRecentPlays} />
-				<PlayHistoryItemList playHistoryItems={this.state.playHistoryItems} mostRecentDate={this.state.mostRecentDate} />
+				<PlayHistoryItemList 
+					playHistoryItems={this.state.playHistoryItems} 
+					mostRecentDate={this.state.mostRecentDate} />
 			</div>
 		);
 	}
