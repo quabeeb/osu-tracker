@@ -47,11 +47,12 @@ class App extends Component {
 			return;
 		}
 
-		const proxyURL="http://localhost:8888";
+		const proxyURL = "http://localhost:8888";
 
 		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_user_recent?k=${apiKey}&u=${username}`)
 		.then(results => results.json())
-		.then(data => this.addRecentPlays(data, apiKey));
+		.then(data => this.addRecentPlays(data, apiKey))
+		.catch(e => console.log("API Key may be invalid or expired. Check https://osu.ppy.sh/p/api"));
 	}
 
 	retrieveAndAddBeatmapInfo(apiKey, playHistoryItem) {
@@ -59,7 +60,7 @@ class App extends Component {
 			return;
 		}
 
-		const proxyURL="http://localhost:8888";
+		const proxyURL = "http://localhost:8888";
 		const beatmapId = playHistoryItem.beatmap_id;
 
 		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_beatmaps?k=${apiKey}&b=${beatmapId}`)
@@ -68,7 +69,8 @@ class App extends Component {
 			playHistoryItem.beatmapInfo=beatmapInfo[0];
 			return playHistoryItem;
 		})
-		.then(playHistoryItem => this.addPlayToHistory(playHistoryItem));
+		.then(playHistoryItem => this.addPlayToHistory(playHistoryItem))
+		.catch(e => console.log("API Key may be invalid or expired. Check https://osu.ppy.sh/p/api"));
 	}
 
 	clearPlayHistory() {

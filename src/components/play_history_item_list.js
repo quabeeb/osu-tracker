@@ -21,7 +21,6 @@ const PlayHistoryItemList = (props) => {
 			</ul>
 		</div>
 	);
-	
 };
 
 export default PlayHistoryItemList;
