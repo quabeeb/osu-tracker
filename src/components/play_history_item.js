@@ -40,6 +40,7 @@ const PlayHistoryItem = (props) => {
 	const beatmapId = playInfo.beatmap_id;
 	const mapname = beatmapInfo.title;
 	const mapauthor = beatmapInfo.creator;
+	const artist = beatmapInfo.artist;
 	const diffName = beatmapInfo.version;
 	const stars = beatmapInfo.difficultyrating;
 	const starsRounded = Number(stars).toFixed(2);
@@ -58,8 +59,18 @@ const PlayHistoryItem = (props) => {
 	return(
 		<li className="list-group-item">
 			<div> {date} </div>
-			<div> {mapauthor} - {mapname} [{diffName} - {starsRounded} stars] {modString}</div>
-			<div> {rank} ({acc}%)</div>
+			<div> 
+				<a href={`https://osu.ppy.sh/b/${beatmapId}`} target="_blank">
+					{artist} - {mapname} [{diffName} - {starsRounded} stars]
+				</a>
+			</div>
+			<div>
+				<span> Mapped by </span>
+				<a href={`https://osu.ppy.sh/u/${mapauthor}`} target="_blank">
+					{mapauthor} 
+				</a>
+			</div>
+			<div> {rank} ({acc}%) {modString} </div>
 		</li>
 	);	
 };
