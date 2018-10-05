@@ -11,7 +11,7 @@ class ConfigurationInput extends Component {
 
 		this.refreshClock = setInterval(
 			() => {this.props.onUserInputChange(this.state.username, this.state.apikey)},
-			500
+			1000
 		);
 	}
 

@@ -19,7 +19,11 @@ const modMap = {
 
 const PlayHistoryItem = (props) => {
 	if(props.item.beatmapInfo == null) {
-		return <div>Loading...</div>
+		return (
+			<li className="list-group-item">
+				<div>Loading...</div>
+			</li>
+		);
 	}
 
 	const playInfo = props.item;
