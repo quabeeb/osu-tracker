@@ -15,33 +15,6 @@ class App extends Component {
 		};
 	}
 
-	addRecentPlays(tempHistoryItems, apiKey) {
-		const ascDateItems = tempHistoryItems.reverse();
-
-		_.each(ascDateItems, (tempHistoryItem) => {
-			this.retrieveAndAddBeatmapInfo(apiKey, tempHistoryItem);
-		});
-	}
-
-	addPlayToHistory(playHistoryItem) {
-		// calculations to compare and display in local time
-		// dates returned from osu! API are in UTC
-		const checkDate = new Date(new Date(new Date(playHistoryItem.date).getTime() - new Date().getTimezoneOffset()*60000).toLocaleString());
-
-		if (this.state.mostRecentDate >= checkDate) {
-			return;
-		}
-
-		const playHistoryItems = this.state.playHistoryItems.slice();
-		playHistoryItems.unshift(playHistoryItem);
-
-		this.setState({
-			playHistoryItems: playHistoryItems, 
-			currentSelection: this.state.currentSelection,
-			mostRecentDate: checkDate
-		});
-	}
-
 	retrieveRecentPlays(username, apiKey) {
 		if (_.isEmpty(username) || _.isEmpty(apiKey)) {
 			return;
@@ -52,7 +25,21 @@ class App extends Component {
 		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_user_recent?k=${apiKey}&u=${username}`)
 		.then(results => results.json())
 		.then(data => this.addRecentPlays(data, apiKey))
-		.catch(e => console.log("API Key may be invalid or expired. Check https://osu.ppy.sh/p/api"));
+		.catch(e => console.log("API Key may be invalid or expired. Check https://osu.ppy.sh/p/api"))
+
+		ReactDOM.hydrate(<App />, document.querySelector(".container-fluid"));
+	}
+
+	addRecentPlays(tempHistoryItems, apiKey) {
+		const newHistoryItems = _.filter(tempHistoryItems, (item) => {
+			return (this.state.mostRecentDate < this.convertDateFromUTCToLocal(item.date));
+		});
+
+		_.each(newHistoryItems, (tempHistoryItem) => {
+			this.retrieveAndAddBeatmapInfo(apiKey, tempHistoryItem);
+		});
+
+		this.addItemsToHistory(newHistoryItems);
 	}
 
 	retrieveAndAddBeatmapInfo(apiKey, playHistoryItem) {
@@ -67,10 +54,27 @@ class App extends Component {
 		.then(results => results.json())
 		.then(beatmapInfo => {
 			playHistoryItem.beatmapInfo=beatmapInfo[0];
-			return playHistoryItem;
-		})
-		.then(playHistoryItem => this.addPlayToHistory(playHistoryItem))
-		.catch(e => console.log("API Key may be invalid or expired. Check https://osu.ppy.sh/p/api"));
+		});
+	}
+
+	addItemsToHistory(newHistoryItems) {
+		if (_.isEmpty(newHistoryItems)) {
+			return;
+		}
+
+		const playHistoryItems = this.state.playHistoryItems.slice();
+		const reversedList = newHistoryItems.reverse();
+		const maxDate = this.convertDateFromUTCToLocal(_.maxBy(reversedList, 'date').date);
+
+		_.each(reversedList, (item) => {
+			playHistoryItems.unshift(item);
+		});
+
+		this.setState({
+			playHistoryItems: playHistoryItems, 
+			currentSelection: this.state.currentSelection,
+			mostRecentDate: maxDate
+		});
 	}
 
 	clearPlayHistory() {
@@ -79,6 +83,10 @@ class App extends Component {
 			currentSelection: null,
 			mostRecentDate: new Date()
 		});
+	}
+
+	convertDateFromUTCToLocal(dateToConvert) {
+		return new Date(new Date(new Date(dateToConvert).getTime() - new Date().getTimezoneOffset()*60000).toLocaleString());
 	}
 
 	render() {

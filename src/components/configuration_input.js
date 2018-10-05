@@ -8,6 +8,25 @@ class ConfigurationInput extends Component {
 			username: '',
 			apikey: ''
 		};
+
+		this.refreshClock = setInterval(
+			() => {this.props.onUserInputChange(this.state.username, this.state.apikey)},
+			500
+		);
+	}
+
+	onUserNameInputChange(username) {
+		this.setState({
+			username: username, apikey: this.state.apikey}, 
+			() => {this.props.onUserInputChange(this.state.username, this.state.apikey)
+		});		
+	}
+
+	onAPIKeyInputChange(apikey) {
+		this.setState({
+			username: this.state.username, apikey: apikey}, 
+			() => {this.props.onUserInputChange(this.state.username, this.state.apikey)
+		});
 	}
 
 	render() {
@@ -35,20 +54,6 @@ class ConfigurationInput extends Component {
 				</div>
 			</div>
 		);
-	}
-
-	onUserNameInputChange(username) {
-		this.setState({
-			username: username, apikey: this.state.apikey}, 
-			() => {this.props.onUserInputChange(this.state.username, this.state.apikey)
-		});		
-	}
-
-	onAPIKeyInputChange(apikey) {
-		this.setState({
-			username: this.state.username, apikey: apikey}, 
-			() => {this.props.onUserInputChange(this.state.username, this.state.apikey)
-		});		
 	}
 }
 

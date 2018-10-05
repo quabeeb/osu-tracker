@@ -1,6 +1,27 @@
 import React from 'react'
 
+const modMap = {
+	'NF' : 1,
+	'EZ' : 2,
+	'TD' : 4, //touch device
+	'HD' : 8,
+	'HR' : 16,
+	'SD' : 32,
+	'DT' : 64,
+	'RX' : 128,
+	'HT' : 256,
+	'NC' : 512,
+	'FL' : 1024,
+	'AU' : 2048, //autoplay
+	'SO' : 4096,
+	'AP' : 8192
+}
+
 const PlayHistoryItem = (props) => {
+	if(props.item.beatmapInfo == null) {
+		return <div>Loading...</div>
+	}
+
 	const playInfo = props.item;
 	const beatmapInfo = playInfo.beatmapInfo;
 	const date = new Date(new Date(playInfo.date).getTime() - new Date().getTimezoneOffset()*60000).toLocaleString()
@@ -38,22 +59,5 @@ const PlayHistoryItem = (props) => {
 		</li>
 	);	
 };
-
-const modMap = {
-	'NF' : 1,
-	'EZ' : 2,
-	'TD' : 4, //touch device
-	'HD' : 8,
-	'HR' : 16,
-	'SD' : 32,
-	'DT' : 64,
-	'RX' : 128,
-	'HT' : 256,
-	'NC' : 512,
-	'FL' : 1024,
-	'AU' : 2048, //autoplay
-	'SO' : 4096,
-	'AP' : 8192
-}
 
 export default PlayHistoryItem;
