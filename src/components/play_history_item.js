@@ -37,7 +37,8 @@ const PlayHistoryItem = (props) => {
 	const acc = ((50*count50 + 100*count100 + 300*count300) / (3*(countMiss + count50 + count100 + count300))).toFixed(2);
 	const rank = playInfo.rank;
 
-	const beatmapId = playInfo.beatmap_id;
+	const beatmapId = beatmapInfo.beatmap_id;
+	const beatmapSetId = beatmapInfo.beatmapset_id;
 	const mapname = beatmapInfo.title;
 	const mapauthor = beatmapInfo.creator;
 	const artist = beatmapInfo.artist;
@@ -58,21 +59,30 @@ const PlayHistoryItem = (props) => {
 
 	return(
 		<li className="list-group-item">
-			<div> {date} </div>
-			<div> 
-				<a href={`https://osu.ppy.sh/b/${beatmapId}`} target="_blank">
-					{artist} - {mapname} [{diffName} - {starsRounded} stars]
-				</a>
+			<div className="media">
+				<div className="media-left">
+					<img className="media-object" src={`https://b.ppy.sh/thumb/${beatmapSetId}l.jpg`} alt="Image not found" />
+				</div>
+				<div className="media-body">
+					<div> {date} </div>
+					<div> 
+						<a href={`https://osu.ppy.sh/b/${beatmapId}`} target="_blank">
+							{artist} - {mapname} [{diffName} - {starsRounded} stars]
+						</a>
+					</div>
+					<div>
+						<span>Mapped by </span>
+						<a href={`https://osu.ppy.sh/u/${mapauthor}`} target="_blank">
+							{mapauthor}
+						</a>
+					</div>
+					<div>
+						{rank} ({acc}%) {modString} 
+					</div>
+				</div>
 			</div>
-			<div>
-				<span> Mapped by </span>
-				<a href={`https://osu.ppy.sh/u/${mapauthor}`} target="_blank">
-					{mapauthor} 
-				</a>
-			</div>
-			<div> {rank} ({acc}%) {modString} </div>
 		</li>
-	);	
+	);
 };
 
 export default PlayHistoryItem;
