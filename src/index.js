@@ -4,6 +4,11 @@ import ReactDOM from 'react-dom';
 import ConfigurationInput from './components/configuration_input';
 import PlayHistoryItemList from './components/play_history_item_list';
 
+var CONFIG = require("../.config");
+
+const proxyURL = CONFIG.proxyurl;
+const refreshRate = CONFIG.refreshRate;
+
 class App extends Component {
 	constructor(props) {
 		super(props);
@@ -19,8 +24,6 @@ class App extends Component {
 		if (_.isEmpty(username) || _.isEmpty(apiKey)) {
 			return;
 		}
-
-		const proxyURL = "http://localhost:8888";
 
 		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_user_recent?k=${apiKey}&u=${username}`)
 		.then(results => results.json())
@@ -47,7 +50,6 @@ class App extends Component {
 			return;
 		}
 
-		const proxyURL = "http://localhost:8888";
 		const beatmapId = playHistoryItem.beatmap_id;
 
 		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_beatmaps?k=${apiKey}&b=${beatmapId}`)
@@ -94,7 +96,9 @@ class App extends Component {
 
 		return (
 			<div>
-				<ConfigurationInput onUserInputChange={retrieveRecentPlays} />
+				<ConfigurationInput 
+					onUserInputChange={retrieveRecentPlays} 
+					refreshRate={refreshRate}/>
 				<PlayHistoryItemList 
 					playHistoryItems={this.state.playHistoryItems} 
 					mostRecentDate={this.state.mostRecentDate} />
