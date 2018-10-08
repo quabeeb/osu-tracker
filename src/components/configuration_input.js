@@ -4,9 +4,12 @@ class ConfigurationInput extends Component {
 	constructor(props) {
 		super(props);
 
+		const username = window.localStorage.getItem('username') || '';
+		const apikey = window.localStorage.getItem('apikey') || '';
+
 		this.state = { 
-			username: '',
-			apikey: ''
+			username: username,
+			apikey: apikey
 		};
 
 		this.refreshClock = setInterval(
@@ -19,7 +22,9 @@ class ConfigurationInput extends Component {
 		this.setState({
 			username: username, apikey: this.state.apikey}, 
 			() => {this.props.onUserInputChange(this.state.username, this.state.apikey)
-		});		
+		});
+
+		window.localStorage.setItem('username', username);
 	}
 
 	onAPIKeyInputChange(apikey) {
@@ -27,6 +32,8 @@ class ConfigurationInput extends Component {
 			username: this.state.username, apikey: apikey}, 
 			() => {this.props.onUserInputChange(this.state.username, this.state.apikey)
 		});
+
+		window.localStorage.setItem('apikey', apikey);
 	}
 
 	render() {
