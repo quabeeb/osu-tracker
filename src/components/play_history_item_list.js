@@ -16,7 +16,7 @@ const PlayHistoryItemList = (props) => {
 			<div> 
 				Last play: {props.mostRecentDate.toLocaleString()}
 			</div>
-			<ul className="list-group list-group-flush andy-scrollable">
+			<ul className="list-group list-group-flush scrollable">
 				{playHistoryItems}
 			</ul>
 		</div>
