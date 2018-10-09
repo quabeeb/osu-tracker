@@ -36,6 +36,7 @@ const PlayHistoryItem = (props) => {
 	const countMiss = Number(playInfo.countmiss);
 	const acc = ((50*count50 + 100*count100 + 300*count300) / (3*(countMiss + count50 + count100 + count300))).toFixed(2);
 	const rank = playInfo.rank;
+	const maxPlayCombo = playInfo.maxcombo
 
 	const beatmapId = beatmapInfo.beatmap_id;
 	const beatmapSetId = beatmapInfo.beatmapset_id;
@@ -43,6 +44,7 @@ const PlayHistoryItem = (props) => {
 	const mapauthor = beatmapInfo.creator;
 	const artist = beatmapInfo.artist;
 	const diffName = beatmapInfo.version;
+	const maxMapCombo = beatmapInfo.max_combo;
 	const stars = beatmapInfo.difficultyrating;
 	const starsRounded = Number(stars).toFixed(2);
 
@@ -77,7 +79,7 @@ const PlayHistoryItem = (props) => {
 						</a>
 					</div>
 					<div>
-						{rank} ({acc}%) {modString} 
+						{rank} ({acc}%) {modString} | {maxPlayCombo}/{maxMapCombo}x
 					</div>
 				</div>
 			</div>
