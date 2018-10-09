@@ -13,10 +13,13 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 
+		const playHistoryItems = JSON.parse(window.localStorage.getItem('playHistoryItems')) || [];
+		const mostRecentDate = new Date(window.localStorage.getItem('mostRecentDate')) || new Date(0);
+
 		this.state = {
-			playHistoryItems: [],
+			playHistoryItems: playHistoryItems,
 			currentSelection: null,
-			mostRecentDate: new Date(0)
+			mostRecentDate: mostRecentDate
 		};
 	}
 
@@ -29,6 +32,9 @@ class App extends Component {
 		.then(results => results.json())
 		.then(data => this.addRecentPlays(data, apiKey))
 		.catch(e => console.log("API Key may be invalid or expired. Check https://osu.ppy.sh/p/api"))
+
+		const playHistoryItems = window.localStorage.setItem('playHistoryItems', JSON.stringify(this.state.playHistoryItems));
+		const mostRecentDate = window.localStorage.setItem('mostRecentDate', this.state.mostRecentDate);
 
 		ReactDOM.hydrate(<App />, document.querySelector(".container-fluid"));
 	}
