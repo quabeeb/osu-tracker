@@ -5,7 +5,7 @@ const PlayHistoryItemList = (props) => {
 	if(!props.playHistoryItems) {
 		return <div>Loading...</div>
 	}
-	
+
 	const playHistoryItems = props.playHistoryItems.map(item => 
 		<PlayHistoryItem key={item.date} item={item} />
 	);

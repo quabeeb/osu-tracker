@@ -31,12 +31,11 @@ class App extends Component {
 		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_user_recent?k=${apiKey}&u=${username}`)
 		.then(results => results.json())
 		.then(data => this.addRecentPlays(data, apiKey))
+		.then(save => {
+			window.localStorage.setItem('playHistoryItems', JSON.stringify(this.state.playHistoryItems));
+			window.localStorage.setItem('mostRecentDate', this.state.mostRecentDate);
+		})
 		.catch(e => console.log("API Key may be invalid or expired. Check https://osu.ppy.sh/p/api"))
-
-		const playHistoryItems = window.localStorage.setItem('playHistoryItems', JSON.stringify(this.state.playHistoryItems));
-		const mostRecentDate = window.localStorage.setItem('mostRecentDate', this.state.mostRecentDate);
-
-		ReactDOM.hydrate(<App />, document.querySelector(".container-fluid"));
 	}
 
 	addRecentPlays(tempHistoryItems, apiKey) {
@@ -44,25 +43,19 @@ class App extends Component {
 			return (this.state.mostRecentDate < this.convertDateFromUTCToLocal(item.date));
 		});
 
-		_.each(newHistoryItems, (tempHistoryItem) => {
-			this.retrieveAndAddBeatmapInfo(apiKey, tempHistoryItem);
+		const beatmapInfoRequests = newHistoryItems.map((item) => {
+			return fetch(`${proxyURL}/https://osu.ppy.sh/api/get_beatmaps?k=${apiKey}&b=${item.beatmap_id}`)
 		});
 
-		this.addItemsToHistory(newHistoryItems);
-	}
-
-	retrieveAndAddBeatmapInfo(apiKey, playHistoryItem) {
-		if (_.isEmpty(apiKey) || _.isEmpty(playHistoryItem)) {
-			return;
-		}
-
-		const beatmapId = playHistoryItem.beatmap_id;
-
-		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_beatmaps?k=${apiKey}&b=${beatmapId}`)
-		.then(results => results.json())
-		.then(beatmapInfo => {
-			playHistoryItem.beatmapInfo=beatmapInfo[0];
-		});
+		Promise.all(beatmapInfoRequests)
+			.then(responses => Promise.all(responses.map(r => r.json())))
+			.then(infos => {
+				return newHistoryItems.map((item, idx) => {
+					item.beatmapInfo=infos[idx][0];
+					return item;
+				});
+			})
+			.then(addHistoryItems => this.addItemsToHistory(addHistoryItems))
 	}
 
 	addItemsToHistory(newHistoryItems) {
