@@ -29,21 +29,21 @@ class App extends Component {
 		}
 
 		fetch(`${proxyURL}/https://osu.ppy.sh/api/get_user_recent?k=${apiKey}&u=${username}`)
-		.then(results => results.json())
-		.then(data => this.addRecentPlays(data, apiKey))
-		.then(save => {
-			window.localStorage.setItem('playHistoryItems', JSON.stringify(this.state.playHistoryItems));
-			window.localStorage.setItem('mostRecentDate', this.state.mostRecentDate);
-		})
-		.catch(e => console.log("API Key may be invalid or expired. Check https://osu.ppy.sh/p/api"))
+			.then(results => results.json())
+			.then(data => this.addRecentPlays(data, username, apiKey))
+			.then(save => {
+				window.localStorage.setItem('playHistoryItems', JSON.stringify(this.state.playHistoryItems));
+				window.localStorage.setItem('mostRecentDate', this.state.mostRecentDate);
+			})
+			.catch(e => console.log("API Key may be invalid or expired. Check https://osu.ppy.sh/p/api"))
 	}
 
-	addRecentPlays(tempHistoryItems, apiKey) {
-		const newHistoryItems = _.filter(tempHistoryItems, (item) => {
+	addRecentPlays(tempHistoryItems, username, apiKey) {
+		const newHistoryItems = _.filter(tempHistoryItems, item => {
 			return (this.state.mostRecentDate < this.convertDateFromUTCToLocal(item.date));
 		});
 
-		const beatmapInfoRequests = newHistoryItems.map((item) => {
+		const beatmapInfoRequests = newHistoryItems.map(item => {
 			return fetch(`${proxyURL}/https://osu.ppy.sh/api/get_beatmaps?k=${apiKey}&b=${item.beatmap_id}`)
 		});
 
@@ -51,6 +51,7 @@ class App extends Component {
 			.then(responses => Promise.all(responses.map(r => r.json())))
 			.then(infos => {
 				return newHistoryItems.map((item, idx) => {
+					item.username=username;
 					item.beatmapInfo=infos[idx][0];
 					return item;
 				});
