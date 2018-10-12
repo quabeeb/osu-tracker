@@ -69,7 +69,7 @@ const PlayHistoryItem = (props) => {
 				<div className="media-body">
 					<div>
 						<span>{date} - </span>
-						<a href={`https://osu.ppy.sh/b/${beatmapId}`} target="_blank">
+						<a href={`https://osu.ppy.sh/u/${username}`} target="_blank">
 							{username}
 						</a>
 					</div>
