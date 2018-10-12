@@ -29,7 +29,8 @@ const PlayHistoryItem = (props) => {
 	const playInfo = props.item;
 	const beatmapInfo = playInfo.beatmapInfo;
 	const date = new Date(new Date(playInfo.date).getTime() - new Date().getTimezoneOffset()*60000).toLocaleString()
-	
+
+	const username = playInfo.username;	
 	const count50 = Number(playInfo.count50);
 	const count100 = Number(playInfo.count100);
 	const count300 = Number(playInfo.count300);
@@ -66,7 +67,12 @@ const PlayHistoryItem = (props) => {
 					<img className="media-object" src={`https://b.ppy.sh/thumb/${beatmapSetId}l.jpg`} alt="Image not found" />
 				</div>
 				<div className="media-body">
-					<div> {date} </div>
+					<div>
+						<span>{date} - </span>
+						<a href={`https://osu.ppy.sh/b/${beatmapId}`} target="_blank">
+							{username}
+						</a>
+					</div>
 					<div> 
 						<a href={`https://osu.ppy.sh/b/${beatmapId}`} target="_blank">
 							{artist} - {mapname} [{diffName} - {starsRounded} stars]
