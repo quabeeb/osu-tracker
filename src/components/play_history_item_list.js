@@ -35,11 +35,11 @@ class PlayHistoryItemList extends Component {
 			<div>
 				<h1>
 					<span>Play History </span>
-					<a className="btn btn-link" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+					<button className="btn btn-link" type="button" data-toggle="collapse" data-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
 						Show Filters
-					</a>
+					</button>
 				</h1>
-				<div className="collapse" id="collapseExample">
+				<div className="collapse" id="filterCollapse">
 					<FilterInput onInputChange={(username) => {this.handleUsernameFilter(username)}}/>
 				</div>
 				<div> 
