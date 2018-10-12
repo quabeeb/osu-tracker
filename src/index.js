@@ -12,7 +12,6 @@ const refreshRate = CONFIG.refreshRate;
 class App extends Component {
 	constructor(props) {
 		super(props);
-
 		const playHistoryItems = JSON.parse(window.localStorage.getItem('playHistoryItems')) || [];
 		const mostRecentDate = new Date(window.localStorage.getItem('mostRecentDate')) || new Date(0);
 

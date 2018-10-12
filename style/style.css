@@ -2,3 +2,8 @@
     max-height: 60vh;
     overflow-y: scroll;
 }
+
+.btn:focus,.btn:active {
+   outline: none !important;
+   box-shadow: none;
+}
