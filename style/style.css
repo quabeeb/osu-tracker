@@ -1,6 +1,6 @@
 .scrollable {
     max-height: 60vh;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .btn:focus,.btn:active {
