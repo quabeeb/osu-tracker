@@ -23,8 +23,10 @@ class PlayHistoryItemList extends Component {
 			return <div>Loading...</div>
 		}
 
+		const cleanUsernameFilter = this.state.usernameFilter.replace(/[^a-zA-Z 0-9]+/g,'');
+
 		const filteredHistoryItems = _.filter(this.props.playHistoryItems, item => {
-			return (_.isEmpty(this.state.usernameFilter) ? true : Boolean(item.username.match(new RegExp(this.state.usernameFilter, "i"))))
+			return (_.isEmpty(this.state.usernameFilter) ? true : Boolean(item.username.match(new RegExp(cleanUsernameFilter, "i"))));
 		});
 
 		const playHistoryItems = filteredHistoryItems.map(item => 
