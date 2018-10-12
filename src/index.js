@@ -95,9 +95,17 @@ class App extends Component {
 
 		return (
 			<div>
-				<ConfigurationInput 
-					onUserInputChange={retrieveRecentPlays} 
-					refreshRate={refreshRate}/>
+				<h1>
+					<span>osu! tracker </span>
+					<button className="btn btn-link" type="button" data-toggle="collapse" data-target="#configurationCollapse" aria-expanded="false" aria-controls="configurationCollapse">
+						Show configuration
+					</button>
+				</h1>
+				<div id="configurationCollapse" className="collapse">
+					<ConfigurationInput 
+						onUserInputChange={retrieveRecentPlays} 
+						refreshRate={refreshRate}/>
+				</div>
 				<PlayHistoryItemList 
 					playHistoryItems={this.state.playHistoryItems} 
 					mostRecentDate={this.state.mostRecentDate} />
