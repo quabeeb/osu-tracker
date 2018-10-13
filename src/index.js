@@ -98,10 +98,10 @@ class App extends Component {
 				<h1>
 					<span>osu! tracker </span>
 					<button className="btn btn-link" type="button" data-toggle="collapse" data-target="#configurationCollapse" aria-expanded="false" aria-controls="configurationCollapse">
-						Show configuration
+						<span className="glyphicon glyphicon-user" aria-hidden="true"></span>
 					</button>
 				</h1>
-				<div id="configurationCollapse" className="collapse">
+				<div id="configurationCollapse" className="collapse in">
 					<ConfigurationInput 
 						onUserInputChange={retrieveRecentPlays} 
 						refreshRate={refreshRate}/>
