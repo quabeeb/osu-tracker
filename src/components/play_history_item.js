@@ -1,4 +1,5 @@
 import React from 'react'
+import PlayHistoryItemOptionDropdown from './play_history_item_option_dropdown'
 
 const modMap = {
 	'NF' : 1,
@@ -72,7 +73,7 @@ const PlayHistoryItem = (props) => {
 						<a href={`https://osu.ppy.sh/u/${username}`} target="_blank">
 							{username}
 						</a>
-						<span className="glyphicon glyphicon-option-horizontal pull-right" />
+						<PlayHistoryItemOptionDropdown />
 					</div>
 					<div> 
 						<a href={`https://osu.ppy.sh/b/${beatmapId}`} target="_blank">
