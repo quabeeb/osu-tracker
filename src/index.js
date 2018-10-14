@@ -96,9 +96,9 @@ class App extends Component {
 		return (
 			<div>
 				<h1>
-					<span>osu! tracker </span>
+					<span>osu! tracker</span>
 					<button className="btn btn-link" type="button" data-toggle="collapse" data-target="#configurationCollapse" aria-expanded="false" aria-controls="configurationCollapse">
-						<span className="glyphicon glyphicon-user" aria-hidden="true"></span>
+						<span className="glyphicon glyphicon-user" aria-hidden="true" />
 					</button>
 				</h1>
 				<div id="configurationCollapse" className="collapse in">

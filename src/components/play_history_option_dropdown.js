@@ -9,7 +9,7 @@ class PlayHistoryOptionDropdown extends Component {
 		return (
 			<span className="dropdown">
 				<button className="btn btn-link dropdown-toggle" type="button" id="playHistoryOptionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-					<span className="glyphicon glyphicon-cog" aria-hidden="true"></span>
+					<span className="glyphicon glyphicon-cog" aria-hidden="true" />
 				</button>
 				<ul className="dropdown-menu" aria-labelledby="playHistoryOptionsDropdown">
 					<li><a href="#">Clear History</a></li>

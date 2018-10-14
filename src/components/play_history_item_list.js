@@ -39,7 +39,7 @@ class PlayHistoryItemList extends Component {
 				<h2>
 					<span>Play History </span>
 					<button className="btn btn-link" type="button" data-toggle="collapse" data-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
-						<span className="glyphicon glyphicon-filter" aria-hidden="true"></span>
+						<span className="glyphicon glyphicon-filter" aria-hidden="true" />
 					</button>					
 					<PlayHistoryOptionDropdown />
 				</h2>

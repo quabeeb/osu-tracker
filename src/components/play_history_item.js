@@ -72,6 +72,7 @@ const PlayHistoryItem = (props) => {
 						<a href={`https://osu.ppy.sh/u/${username}`} target="_blank">
 							{username}
 						</a>
+						<span className="glyphicon glyphicon-option-horizontal pull-right" />
 					</div>
 					<div> 
 						<a href={`https://osu.ppy.sh/b/${beatmapId}`} target="_blank">
