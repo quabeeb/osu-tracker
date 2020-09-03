@@ -20,3 +20,4 @@ Keeps track of osu! plays in a session. osu! API only allows you to see the [ten
 5. Run `npm start`
 6. Navigate `localhost:8080` on your browser
 
+:)
