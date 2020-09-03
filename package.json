@@ -18,7 +18,7 @@
     "babel-preset-react": "^6.1.18",
     "concurrently": "^4.0.1",
     "webpack": "^1.12.9",
-    "webpack-dev-server": "^1.14.0"
+    "webpack-dev-server": "^3.1.11"
   },
   "dependencies": {
     "http-proxy": "1.11.1",
