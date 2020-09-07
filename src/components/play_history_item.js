@@ -4,7 +4,7 @@ import PlayHistoryItemOptionDropdown from './play_history_item_option_dropdown'
 const modMap = {
 	'NF' : 1,
 	'EZ' : 2,
-	'TD' : 4, //touch device
+	'TD' : 4,
 	'HD' : 8,
 	'HR' : 16,
 	'SD' : 32,
@@ -13,7 +13,7 @@ const modMap = {
 	'HT' : 256,
 	'NC' : 512,
 	'FL' : 1024,
-	'AU' : 2048, //autoplay
+	'AU' : 2048,
 	'SO' : 4096,
 	'AP' : 8192
 }
